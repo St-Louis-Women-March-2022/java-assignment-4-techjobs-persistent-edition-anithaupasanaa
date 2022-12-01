@@ -36,16 +36,19 @@ public class EmployerController {
                                     Errors errors, Model model) {
 
         if (errors.hasErrors()) {
+            model.addAttribute("title","add employer");
+            model.addAttribute("emloyers",employerRepository.findAll());
             return "employers/add";
         }
-
+        employerRepository.save(newEmployer);
         return "redirect:";
     }
 
     @GetMapping("view/{employerId}")
     public String displayViewEmployer(Model model, @PathVariable int employerId) {
 
-        Optional optEmployer = null;
+       // Optional optEmployer = null;
+        Optional<Employer> optEmployer= employerRepository.findById(employerId);
         if (optEmployer.isPresent()) {
             Employer employer = (Employer) optEmployer.get();
             model.addAttribute("employer", employer);
